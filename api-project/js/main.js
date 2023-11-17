@@ -1,47 +1,47 @@
 import '../styles/style.css'
-import { value } from './api.js'
+// import { value } from './api.js'
 
 export const DOMSelectors ={
   app: document.querySelector('body'),
   form: document.querySelector('#form'),
-  search: document.querySelector('.search')
+  search: document.querySelector('#search')
 };
-
-xhr.open('GET', `https://themealdb.com/api/json/v1/1/search.php?s=${value}`);
+function callAPI(e){
+  const request = new XMLHttpRequest();
+  const value = DOMSelectors.search.value
+  console.log(value)
+  request.open('GET', `https:themealdb.com/api/json/v1/1/search.php?s=${value}`);
 
 
 // Set the response type to JSON
-xhr.responseType = 'json';
+  request.responseType = 'json';
 
 
 // Send the request
-xhr.send();
+  request.send();
 
 
 // Define a callback function to handle the response
-xhr.onload = function() {
+  request.onload = function(e) {
   // Access the api data
-  const response = xhr.response.response;
-  const meal=response.strMeal
+    e.preventDefault();
+    const response = request.response;
+    console.log(response)
+    const meal=String(response.strMeal);
 
 
   // Do something with the response
-  console.log(meal);
+    console.log(meal);
 }
+}
+
 
 function clearinput(){
-  value="";
+  DOMSelectors.search.value="";
 }
 
-// DOMSelectors.form.addEventListener("submit", function (e) {
-//   e.preventDefault();
-
-//   createcard();
-//   clearinput();
-// });
-
 // function createcard(){
-//   return meals.forEach((thing)=> DOMSelectors.app.insertAdjacentHTML(
+//   return response.forEach((thing)=> DOMSelectors.app.insertAdjacentHTML(
 //     "afterbegin", 
 // `<div class="box">
 //     <div class="item">
@@ -49,12 +49,22 @@ function clearinput(){
 //         <div class="item_bg"></div>
 
 //         <div class="item_title">
-//           <p class="name_title">${thing.name} </p>
+//           <p class="name_title">${thing.strMeal} </p>
 //         </div>
-//           <span class="item_date"> ${thing.ingredients}
+//           <span class="item_date"> ${thing.strCategory}
 //           </span>
 //       </div>
 //     </div>
 //   </div>`
 //   ))
 //   }
+
+
+DOMSelectors.form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  callAPI();
+  // createcard();
+  clearinput();
+});
+
