@@ -6,6 +6,8 @@ export const DOMSelectors ={
   form: document.querySelector('#form'),
   search: document.querySelector('#search')
 };
+
+
 function callAPI(e){
   const request = new XMLHttpRequest();
   const value = DOMSelectors.search.value
@@ -25,46 +27,49 @@ function callAPI(e){
   request.onload = function(e) {
   // Access the api data
     e.preventDefault();
-    const response = request.response;
-    console.log(response)
-    const meal=String(response.strMeal);
-
+    const reply = request.response;
+    console.log(reply)
+    const recipes=reply.meals;
+    const meals = recipes.forEach((meal)=> console.log(meal.strMeal))
 
   // Do something with the response
-    console.log(meal);
+    console.log(meals);
+    return (reply, recipes, meals);
+  }
+
 }
-}
+
 
 
 function clearinput(){
   DOMSelectors.search.value="";
 }
 
-// function createcard(){
-//   return response.forEach((thing)=> DOMSelectors.app.insertAdjacentHTML(
-//     "afterbegin", 
-// `<div class="box">
-//     <div class="item">
-//       <div class="item_link">
-//         <div class="item_bg"></div>
+function createcard(x){
+  return x.forEach((thing)=> DOMSelectors.app.insertAdjacentHTML(
+    "afterbegin", 
+`<div class="box">
+    <div class="item">
+      <div class="item_link">
+        <div class="item_bg"></div>
 
-//         <div class="item_title">
-//           <p class="name_title">${thing.strMeal} </p>
-//         </div>
-//           <span class="item_date"> ${thing.strCategory}
-//           </span>
-//       </div>
-//     </div>
-//   </div>`
-//   ))
-//   }
+        <div class="item_title">
+          <p class="name_title">${thing.strMeal} </p>
+        </div>
+          <span class="item_date"> ${thing.strCategory}
+          </span>
+      </div>
+    </div>
+  </div>`
+  ))
+  }
 
 
 DOMSelectors.form.addEventListener("submit", function (e) {
   e.preventDefault();
 
   callAPI();
-  // createcard();
+  createcard(recipes);
   clearinput();
 });
 
