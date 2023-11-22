@@ -2,7 +2,7 @@ import '../styles/style.css'
 // import { value } from './api.js'
 
 export const DOMSelectors ={
-  app: document.querySelector('body'),
+  app: document.querySelector('#app'),
   form: document.querySelector('#form'),
   search: document.querySelector('#search')
 };
@@ -10,9 +10,11 @@ export const DOMSelectors ={
 const request = new XMLHttpRequest();
 
 function createcard(x){
+  
   return x.forEach((thing)=> DOMSelectors.app.insertAdjacentHTML(
     "afterbegin", 
-`<div class="box">
+`<a href=${thing.strSource}>
+<div class="box">
     <div class="item">
       <div class="item_link">
         <div class="item_bg"></div>
@@ -24,7 +26,8 @@ function createcard(x){
           </span>
       </div>
     </div>
-  </div>`
+  </div>
+  </a>`
   ))
   }
 
@@ -49,10 +52,7 @@ function callAPI(e){
     const reply = request.response;
     console.log(reply);
     const recipes=reply.meals;
-    const meals = recipes.forEach((meal)=> console.log(meal.strMeal))
-
   // Do something with the response
-    console.log(meals);
     createcard(recipes);
   }
 
