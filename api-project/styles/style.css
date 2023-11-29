@@ -236,3 +236,7 @@ background-color: #4c49ea;
   font-size: 15px;
   text-decoration: underline;
 }
+.no_cat_message{
+  color:#e44002;
+  font-size: 20px;
+}
