@@ -1,5 +1,5 @@
 import '../styles/style.css'
-// import { value } from './api.js'
+// import { createeverythingcard, createnosourcecard, createnothingcard, createcatcard } from './card_functions.js'
 
 export const DOMSelectors ={
   app: document.querySelector('#app'),
@@ -71,7 +71,24 @@ function createnothingcard(x){
   </div>`,
   )
 }
+function createcatcard(x, y){
+  return DOMSelectors.app.insertAdjacentHTML(
+    "afterbegin", 
+  `<div class="box">
+    <div class="item">
+      <div class="item_link">
+        <div class="item_bg"></div>
 
+        <div class="item_title">
+          <p class="name_title">${x.strMeal} </p>
+        </div>
+          <span class="item_category"> ${y}
+          </span>
+      </div>
+    </div>
+  </div>`
+  )
+}
 function callAPIsearch(e){
   const value = DOMSelectors.search.value
   console.log(value)
@@ -133,24 +150,15 @@ function callAPIcat(e){
     const recipes=reply.meals;
   // Do something with the response
     recipes.forEach(function(meal){
-    if (meal.strSource === null){
-      if (meal.strYoutube === null){
-        createnothingcard(meal);
-        console.log('nothing');
-      }
-      createnosourcecard(meal);
-      console.log('nosource : go to utube')
-    }
-    else {
-      createeverythingcard(meal);
-      console.log('everything')
-    }})
+    createcatcard(meal, category);
+  })
   }
 
 }
 
 function clearinput(){
   DOMSelectors.search.value="";
+  DOMSelectors.category_search.value="";
 }
 
 

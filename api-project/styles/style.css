@@ -141,6 +141,16 @@ color: var(--text_color);
 transition: color .5s ease;
 z-index: 3;
 }
+.item_category {
+  position: absolute;
+  font-weight: bold;
+  color: var(--text_color);
+  -webkit-transition: color .5s ease;
+  -o-transition: color .5s ease;
+  transition: color .5s ease;
+  z-index: 3;
+  text-transform: capitalize;
+  }
 
 .item_bg {
 height: 128px;
