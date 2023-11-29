@@ -130,7 +130,7 @@ function callAPIsearch(e){
 function callAPIcat(e){
   const category = DOMSelectors.category_search.value
   console.log(category)
-  request.open('GET', `https:themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+  request.open('GET', `https:themealdb.com/api/json/v1/1/search.php?s=`);
 
 
 // Set the response type to JSON
@@ -147,12 +147,63 @@ function callAPIcat(e){
     e.preventDefault();
     const reply = request.response;
     console.log(reply);
-    const recipes=reply.meals;
+    const all_recipes=reply.meals;
+    recipes = all_recipes.filter((recipe)=> recipe.strCategory=== category)
   // Do something with the response
-    recipes.forEach(function(meal){
-    createcatcard(meal, category);
-  })
+  //   recipes.forEach(function(meal){
+  //   createcatcard(meal, category);
+  // })
+  recipes.forEach(function(meal){
+    if (meal.strSource === null){
+      if (meal.strYoutube === null){
+        createnothingcard(meal);
+        console.log('nothing');
+      }
+      createnosourcecard(meal);
+      console.log('nosource : go to utube')
+    }
+    else {
+      createeverythingcard(meal);
+      console.log('everything')
+    }})
   }
+
+}
+
+function callAPI(e){
+  request.open('GET', `https:themealdb.com/api/json/v1/1/search.php?s=`);
+
+
+// Set the response type to JSON
+  request.responseType = 'json';
+
+
+// Send the request
+  request.send();
+
+
+// Define a callback function to handle the response
+  request.onload = function aa(e) {
+  // Access the api data
+  e.preventDefault();
+  const reply = request.response;
+  console.log(reply);
+  const recipes=reply.meals;
+// Do something with the response
+  recipes.forEach(function(meal){
+  if (meal.strSource === null){
+    if (meal.strYoutube === null){
+      createnothingcard(meal);
+      console.log('nothing');
+    }
+    createnosourcecard(meal);
+    console.log('nosource : go to utube')
+  }
+  else {
+    createeverythingcard(meal);
+    console.log('everything')
+  }})
+}
 
 }
 
@@ -161,18 +212,22 @@ function clearinput(){
   DOMSelectors.category_search.value="";
 }
 
+function clearcards(){
+  DOMSelectors.app.innerHTML = ""
+}
 
+callAPI();
 
 DOMSelectors.form.addEventListener("submit", function (e) {
   e.preventDefault();
-
+  clearcards();
   callAPIsearch();
   clearinput();
 });
 
 DOMSelectors.category_form.addEventListener("submit", function (e) {
   e.preventDefault();
-
+  clearcards();
   callAPIcat();
   clearinput();
 });
