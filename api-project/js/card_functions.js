@@ -1,6 +1,29 @@
 import '../styles/style.css'
 import { DOMSelectors } from './main.js'
 
+
+
+if (recipes.length === 0){
+  DOMSelectors.app.insertAdjacentHTML(
+    "afterbegin",
+    `<p class="no_cat_message"> There Are No Meals In This Category </p>`
+  )
+}
+else{recipes.forEach(function(meal){
+  if (meal.strSource === null){
+    if (meal.strYoutube === null){
+      createnothingcard(meal);
+      console.log('nothing');
+    }
+    createnosourcecard(meal);
+    console.log('nosource : go to utube')
+  }
+  else {
+    createeverythingcard(meal);
+    console.log('everything')
+  }})
+}}
+
 export function createeverythingcard(x){
     return DOMSelectors.app.insertAdjacentHTML(
       "afterbegin", 
@@ -79,3 +102,58 @@ export function createcatcard(x, y){
     </div>`
     )
   }
+
+
+  request.open('GET', `https:themealdb.com/api/json/v1/1/search.php?s=${str_meals}`);
+  request.responseType = 'json';
+  request.send();
+  request.onload = function aa(e) {
+    e.preventDefault();
+    const reply = request.response;
+    console.log(reply);
+    const recipes=reply.meals;
+    recipes.forEach(function(meal){
+    if (meal.strSource === null){
+      if (meal.strYoutube === null){
+        createnothingcard(meal);
+        console.log('nothing');
+      }
+      createnosourcecard(meal);
+      console.log('nosource : go to utube')
+    }
+    else {
+      createeverythingcard(meal);
+      console.log('everything')
+    }})
+}
+
+
+
+const all_str_meals = [];
+      all_str_meals.push(x.str_meals);
+      console.log(all_str_meals);
+      console.log(all_str_meals.length)
+      for (let i = 0; i < all_str_meals.length; i++) {
+        request.open('GET', `https:themealdb.com/api/json/v1/1/search.php?s=${str_meals}`);
+        request.responseType = 'json';
+        request.send();
+        request.onload = function aa(e) {
+          e.preventDefault();
+          const reply = request.response;
+          console.log(reply);
+          const recipes=reply.meals;
+          recipes.forEach(function(meal){
+          if (meal.strSource === null){
+            if (meal.strYoutube === null){
+              createnothingcard(meal);
+              console.log('nothing');
+            }
+            createnosourcecard(meal);
+            console.log('nosource : go to utube')
+          }
+          else {
+            createeverythingcard(meal);
+            console.log('everything')
+          }})
+      }
+      }

@@ -89,6 +89,7 @@ function createnothingcard(x){
 //   </div>`
 //   )
 // }
+
 function callAPIsearch(e){
   const value = DOMSelectors.search.value
   console.log(value)
@@ -127,55 +128,105 @@ function callAPIsearch(e){
   }
 
 }
+// function callAPIcat(e){
+//   const category = DOMSelectors.category_search.value
+//   console.log(category)
+//   request.open('GET', `https:themealdb.com/api/json/v1/1/search.php?s`);
+
+//   request.responseType = 'json';
+
+//   request.send();
+
+//   request.onload = function aa(e) {
+//     e.preventDefault();
+//     const reply = request.response;
+//     // console.log(reply);
+//     const all_recipes=reply.meals;
+//     const recipes = all_recipes.filter((recipe)=> recipe.strCategory=== category)
+//     console.log(recipes)
+//   // Do something with the response
+//   //   recipes.forEach(function(meal){
+//   //   createcatcard(meal, category);
+//   // })
+//   if (recipes.length === 0){
+//     DOMSelectors.app.insertAdjacentHTML(
+//       "afterbegin",
+//       `<p class="no_cat_message"> There Are No Meals In This Category </p>`
+//     )
+//   }
+//   else{recipes.forEach(function(meal){
+//     if (meal.strSource === null){
+//       if (meal.strYoutube === null){
+//         createnothingcard(meal);
+//         console.log('nothing');
+//       }
+//       createnosourcecard(meal);
+//       console.log('nosource : go to utube')
+//     }
+//     else {
+//       createeverythingcard(meal);
+//       console.log('everything')
+//     }})
+//   }}
+
+// };
+
 function callAPIcat(e){
   const category = DOMSelectors.category_search.value
   console.log(category)
-  request.open('GET', `https:themealdb.com/api/json/v1/1/search.php?s`);
+  request.open('GET', `https:themealdb.com/api/json/v1/1/filter.php?c=${category}`);
 
-
-// Set the response type to JSON
   request.responseType = 'json';
 
-
-// Send the request
   request.send();
 
-
-// Define a callback function to handle the response
   request.onload = function aa(e) {
-  // Access the api data
     e.preventDefault();
     const reply = request.response;
     // console.log(reply);
     const all_recipes=reply.meals;
-    const recipes = all_recipes.filter((recipe)=> recipe.strCategory=== category)
-    console.log(recipes)
+    // console.log(all_recipes);
+
+    const all_str_meals = [];
+      all_str_meals.push(all_recipes.forEach(function (x){
+        return (x.strMeal)
+      }));
+      console.log(all_str_meals);
+      console.log(all_str_meals.length);
+      for (let i = 0; i < all_str_meals.length; i++) {
+        request.open('GET', `https:themealdb.com/api/json/v1/1/search.php?s=${all_str_meals[i]}`);
+        request.responseType = 'json';
+        request.send();
+        request.onload = function aa(e) {
+          e.preventDefault();
+          const reply = request.response;
+          console.log(reply);
+          const recipes=reply.meals;
+          recipes.forEach(function(meal){
+          if (meal.strSource === null){
+            if (meal.strYoutube === null){
+              createnothingcard(meal);
+              console.log('nothing');
+            }
+            createnosourcecard(meal);
+            console.log('nosource : go to utube')
+          }
+          else {
+            createeverythingcard(meal);
+            console.log('everything')
+          }})
+      }
+      }
+    
+    // const recipes = all_recipes.filter((recipe)=> recipe.strCategory=== category)
+    // console.log(recipes)
+
   // Do something with the response
   //   recipes.forEach(function(meal){
   //   createcatcard(meal, category);
   // })
-  if (recipes.length === 0){
-    DOMSelectors.app.insertAdjacentHTML(
-      "afterbegin",
-      `<p class="no_cat_message"> There Are No Meals In This Category </p>`
-    )
-  }
-  else{recipes.forEach(function(meal){
-    if (meal.strSource === null){
-      if (meal.strYoutube === null){
-        createnothingcard(meal);
-        console.log('nothing');
-      }
-      createnosourcecard(meal);
-      console.log('nosource : go to utube')
-    }
-    else {
-      createeverythingcard(meal);
-      console.log('everything')
-    }})
-  }}
 
-};
+}};
 
 function dropdown(e){
   const new_req = new XMLHttpRequest();
@@ -260,7 +311,7 @@ callAPI();
 DOMSelectors.form.addEventListener("submit", function (e) {
   e.preventDefault();
   clearcards();
-  callAPIsearch();
+  callAPIsearch(value);
   clearinput();
 });
 
