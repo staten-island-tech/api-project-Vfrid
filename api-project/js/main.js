@@ -188,13 +188,15 @@ function callAPIcat(e){
     // console.log(all_recipes);
 
     const all_str_meals = [];
-      all_str_meals.push(all_recipes.forEach(function (x){
-        return (x.strMeal)
-      }));
+      // all_str_meals.push(all_recipes.forEach(function (x){
+      //   return (x.strMeal)
+      // }));
+      all_recipes.forEach((mel)=> all_str_meals.push(mel.strMeal))
       console.log(all_str_meals);
       console.log(all_str_meals.length);
       for (let i = 0; i < all_str_meals.length; i++) {
         request.open('GET', `https:themealdb.com/api/json/v1/1/search.php?s=${all_str_meals[i]}`);
+        console.log(all_str_meals[i])
         request.responseType = 'json';
         request.send();
         request.onload = function aa(e) {
