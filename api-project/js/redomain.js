@@ -1,5 +1,5 @@
 import '../styles/style.css';
-import { js_extension_check } from './card_functions';
+import { js_extension_check, createCard, createeverythingcard, createnosourcecard, createnothingcard } from './card_functions';
 
 const DOMSelectors ={
   app: document.querySelector('#app'),
@@ -13,15 +13,22 @@ async function getData(URL){
     try{
         const response = await fetch(URL);
         const data = await response.json();
-        console.log(data);
+        console.log(data.meals);
     } catch(error){
-        console.log('could not get data')
+        console.log('could not get data (getData)')
     }
 }
 
-
-
-
+async function getFirstData(URL){
+  try{
+      const response = await fetch(URL);
+      const data = await response.json();
+      console.log(data.meals[0]);
+      return data.meals[0]
+  } catch(error){
+      console.log('could not get data (getFirstData)')
+  }
+}
 
 
 
@@ -33,12 +40,15 @@ async function getCatData(URL){
     const all_meals = data.meals
     const all_names = [];
     all_meals.forEach((dat)=> all_names.push(dat.strMeal));
-    console.log(all_names);
-    for(let i = 0; i<all_names.length; i++){
-      const now_search_URL = `https:themealdb.com/api/json/v1/1/search.php?s=${all_names[i]}`
-    }
+    // console.log(all_names);
+    all_names.forEach(function(name){
+      const now_search_URL = `https:themealdb.com/api/json/v1/1/search.php?s=${name}`;
+      getFirstData(now_search_URL);
+      createCard(getFirstData(now_search_URL));
+      
+    })
   } catch(error){
-      console.log('could not get data')
+      console.log('could not get data (getCatData)')
   }
 }
 
