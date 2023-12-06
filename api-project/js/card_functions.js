@@ -1,3 +1,5 @@
+import { DOMSelectors } from './redomain'
+
 export function js_extension_check(x){
     console.log(x)
 };
@@ -63,10 +65,10 @@ export function createnothingcard(x){
     )
   }
 
-export async function createCard(x){
+export async function createCatCard(x){
     try{
-        console.log(x)
-        x.forEach(function(meal){
+        // console.log(x)
+        function aa (meal){
             if (meal.strSource === null){
               if (meal.strYoutube === null){
                 createnothingcard(meal);
@@ -78,7 +80,8 @@ export async function createCard(x){
             else {
               createeverythingcard(meal);
               console.log('everything')
-            }})
+            }}
+        aa(x);
     } catch(error){
         console.log('could not get data (createCard)')
     }

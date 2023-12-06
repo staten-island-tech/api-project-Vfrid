@@ -1,7 +1,7 @@
 import '../styles/style.css';
-import { js_extension_check, createCard, createeverythingcard, createnosourcecard, createnothingcard } from './card_functions';
+import { js_extension_check, createCatCard, createeverythingcard, createnosourcecard, createnothingcard } from './card_functions';
 
-const DOMSelectors ={
+export const DOMSelectors ={
   app: document.querySelector('#app'),
   form: document.querySelector('#form'),
   category_form: document.querySelector('#cat_form'),
@@ -13,7 +13,11 @@ async function getData(URL){
     try{
         const response = await fetch(URL);
         const data = await response.json();
-        console.log(data.meals);
+        // console.log(data.meals);
+        const meals = data.meals
+        console.log(meals)
+        meals.forEach((meal)=> createCatCard(meal));
+        return meals
     } catch(error){
         console.log('could not get data (getData)')
     }
@@ -23,8 +27,9 @@ async function getFirstData(URL){
   try{
       const response = await fetch(URL);
       const data = await response.json();
-      console.log(data.meals[0]);
-      return data.meals[0]
+      const first_meals = data.meals[0];
+      console.log(first_meals);
+      return first_meals
   } catch(error){
       console.log('could not get data (getFirstData)')
   }
@@ -41,10 +46,10 @@ async function getCatData(URL){
     const all_names = [];
     all_meals.forEach((dat)=> all_names.push(dat.strMeal));
     // console.log(all_names);
-    all_names.forEach(function(name){
+    all_names.forEach(async function(name){
       const now_search_URL = `https:themealdb.com/api/json/v1/1/search.php?s=${name}`;
-      getFirstData(now_search_URL);
-      createCard(getFirstData(now_search_URL));
+      const result = await getFirstData(now_search_URL); 
+      createCatCard(result);
       
     })
   } catch(error){
@@ -67,10 +72,13 @@ async function dropdown(e){
     const response = await fetch(urly);
     const data = await response.json();
     const all_cats=data.categories;
-    all_cats.forEach((cat)=> DOMSelectors.category_search.insertAdjacentHTML(
-      'afterbegin',
-      `<option value=${cat.strCategory}> ${cat.strCategory}</option> `
-    ))
+    if (DOMSelectors.category_search.innerHTML='<option ></option>'){
+      all_cats.forEach((cat)=> DOMSelectors.category_search.insertAdjacentHTML(
+        'afterbegin',
+        `<option value=${cat.strCategory}> ${cat.strCategory}</option> `
+      ))
+    }
+
 } catch(error){
     console.log('could not get data')
 }
@@ -78,20 +86,21 @@ async function dropdown(e){
 }
 
 dropdown();
+clearinput();
 
 DOMSelectors.form.addEventListener("submit", function (e) {
     e.preventDefault();
+    clearcards();
     let value = DOMSelectors.search.value;
     const name_search_URL = `https:themealdb.com/api/json/v1/1/search.php?s=${value}`;
     console.log(value);
     js_extension_check('card_functions js extension works');
     getData(name_search_URL);
-    clearinput();
-    clearcards();
   });
   
   DOMSelectors.category_form.addEventListener("submit", function (e) {
     e.preventDefault();
+    clearcards();
     let category = DOMSelectors.category_search.value;
     console.log(category);
     const category_search_URL = `https:themealdb.com/api/json/v1/1/filter.php?c=${category}`
@@ -102,5 +111,4 @@ DOMSelectors.form.addEventListener("submit", function (e) {
     // returned_categories.forEach((mel)=> category_names.push(mel.strMeal))
     // console.log(category_names, 'category names')
     clearinput();
-    clearcards();
   });
