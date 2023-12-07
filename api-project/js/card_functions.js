@@ -65,7 +65,7 @@ export function createnothingcard(x){
     )
   }
 
-export async function createCatCard(x){
+export function createCatCard(x){
     try{
         // console.log(x)
         function aa (meal){

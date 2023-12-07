@@ -16,11 +16,15 @@ async function getData(URL){
         // console.log(data.meals);
         const meals = data.meals
         console.log(meals)
-        meals.forEach((meal)=> createCatCard(meal));
+        console.log(meals.length)
         return meals
     } catch(error){
         console.log('could not get data (getData)')
     }
+}
+
+async function createCardsforData(meals){
+  meals.forEach((meal)=> createCatCard(meal));
 }
 
 async function getFirstData(URL){
@@ -88,14 +92,16 @@ async function dropdown(e){
 dropdown();
 clearinput();
 
-DOMSelectors.form.addEventListener("submit", function (e) {
+DOMSelectors.form.addEventListener("submit", async function (e) {
     e.preventDefault();
     clearcards();
     let value = DOMSelectors.search.value;
     const name_search_URL = `https:themealdb.com/api/json/v1/1/search.php?s=${value}`;
     console.log(value);
     js_extension_check('card_functions js extension works');
-    getData(name_search_URL);
+    const meals = await getData(name_search_URL);
+    createCardsforData(meals);
+    clearinput();
   });
   
   DOMSelectors.category_form.addEventListener("submit", function (e) {
