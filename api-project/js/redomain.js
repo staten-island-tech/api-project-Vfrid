@@ -109,7 +109,7 @@ DOMSelectors.form.addEventListener("submit", async function (e) {
     clearcards();
     let category = DOMSelectors.category_search.value;
     console.log(category);
-    const category_search_URL = `https://themealdb.com/api/json/v1/1/filter.php?c=${category}`
+    const category_search_URL = `https:themealdb.com/api/json/v1/1/filter.php?c=${category}`
     getCatData(category_search_URL);
     // const returned_categories = getData(category_search_URL);
     // console.log(returned_categories, 'returned categories')
