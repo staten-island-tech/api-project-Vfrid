@@ -51,7 +51,7 @@ async function getCatData(URL){
     all_meals.forEach((dat)=> all_names.push(dat.strMeal));
     // console.log(all_names);
     all_names.forEach(async function(name){
-      const now_search_URL = `https:themealdb.com/api/json/v1/1/search.php?s=${name}`;
+      const now_search_URL = `https://themealdb.com/api/json/v1/1/search.php?s=${name}`;
       const result = await getFirstData(now_search_URL); 
       createCatCard(result);
       
