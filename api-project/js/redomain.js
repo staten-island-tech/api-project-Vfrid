@@ -72,7 +72,7 @@ function clearcards(){
 
 async function dropdown(e){
   try{
-    const urly=`https:themealdb.com/api/json/v1/1/categories.php`
+    const urly=`https://themealdb.com/api/json/v1/1/categories.php`
     const response = await fetch(urly);
     const data = await response.json();
     const all_cats=data.categories;
@@ -96,7 +96,7 @@ DOMSelectors.form.addEventListener("submit", async function (e) {
     e.preventDefault();
     clearcards();
     let value = DOMSelectors.search.value;
-    const name_search_URL = `https:themealdb.com/api/json/v1/1/search.php?s=${value}`;
+    const name_search_URL = `https://themealdb.com/api/json/v1/1/search.php?s=${value}`;
     console.log(value);
     js_extension_check('card_functions js extension works');
     const meals = await getData(name_search_URL);
