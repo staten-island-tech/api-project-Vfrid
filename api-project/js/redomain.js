@@ -1,5 +1,5 @@
 import '../styles/style.css';
-import { js_extension_check, createCatCard, createeverythingcard, createnosourcecard, createnothingcard } from './card_functions';
+import { js_extension_check, createCatCard, createRandomCatCard, createeverythingcard, createnosourcecard, createnothingcard } from './card_functions';
 
 export const DOMSelectors ={
   app: document.querySelector('#app'),
@@ -7,6 +7,7 @@ export const DOMSelectors ={
   category_form: document.querySelector('#cat_form'),
   search: document.querySelector('#search'),
   category_search: document.querySelector('#category_search'),
+  random_h: document.querySelector('.randomh'),
 };
 
 async function getData(URL){
@@ -25,6 +26,9 @@ async function getData(URL){
 
 async function createCardsforData(meals){
   meals.forEach((meal)=> createCatCard(meal));
+}
+async function createRandomCardsforData(meals){
+  meals.forEach((meal)=> createRandomCatCard(meal));
 }
 
 async function getFirstData(URL){
@@ -88,8 +92,22 @@ async function dropdown(e){
 }
 
 }
+async function onload(e){
+  try{
+    const url_onload=`https://themealdb.com/api/json/v1/1/random.php`
+    const response = await fetch(url_onload);
+    const data = await response.json();
+    createRandomCardsforData(data.meals);
+    // DOMSelectors.random_h.insertAdjacentHTML(
+    //   `afterbegin`,  `A Random Meal To Try!`
+    // )
+  } catch(error){
+    console.log('could not get data onload')
+  }
+}
 
 dropdown();
+onload();
 clearinput();
 
 DOMSelectors.form.addEventListener("submit", async function (e) {
