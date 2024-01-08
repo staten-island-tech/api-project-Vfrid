@@ -104,7 +104,6 @@ export function createRnosourcecard(x){
           </div> 
             <span class="item_date"> ${x.strCategory}
             </span> 
-            A Random Meal To Try!
         </div>
       </div>
     </div>
